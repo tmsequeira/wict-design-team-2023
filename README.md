@@ -1,5 +1,5 @@
 # wict-design-team-2023
-Files for sensor software
+This repository is for the SFU's Women in Clean Tech Team as a collaboration space to design code for a IAQ meter prototype.
 
 # Confirmed Sensors
   
