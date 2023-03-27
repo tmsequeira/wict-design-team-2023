@@ -11,9 +11,15 @@
 
 void setup() {
   // put your setup code here, to run once:
+  Serial.begin(9600);
 
   // set pin modes
-
+  pinMode(DHT22,OUTPUT);
+  pinMode(MG811,OUTPUT);
+  pinMode(MQ131,OUTPUT);
+  pinMode(PMS5003,OUTPUT);
+  pinMode(SGP40,OUTPUT);
+  
   // Initialize sensors
 
 }
@@ -21,4 +27,25 @@ void setup() {
 void loop() {
   // put your main code here, to run repeatedly:
 
+  // Temperature Data
+  Serial.print("Temperature:" );
+  Serial.println();
+  // Humidity Data
+  Serial.print("Humidity:" );
+  Serial.println(); 
+  // CO2 Data
+  Serial.print("CO2 Level:" );
+  Serial.println();
+  // Ozone Data
+  Serial.print("Ozone Level:" );
+  Serial.println();
+  // Particulate Matter
+  Serial.print("Particulate Matter:" );
+  Serial.println();
+  // VOC Detector Data
+  Serial.print("VOCs:" );
+  Serial.println();
+  
+  // delay in display readings
+  delay(100);
 }
