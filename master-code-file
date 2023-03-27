@@ -1,1 +1,24 @@
 # This document is for the complete code to run with the electronics team
+
+//Libraries to include
+
+//Define PIN numbers
+// #define DHT22 1
+// #define MG811 2
+// #define MQ131 3
+// #define PMS5003 4
+// #define SGP40 5
+
+void setup() {
+  // put your setup code here, to run once:
+
+  // set pin modes
+
+  // Initialize sensors
+
+}
+
+void loop() {
+  // put your main code here, to run repeatedly:
+
+}
