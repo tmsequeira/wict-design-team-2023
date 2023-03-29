@@ -1,1 +1,49 @@
+#include <DHT.h>
 
+// might need to change data pin value, should be pin number connected to DHT22
+#define dataPin 2
+#define DHTType DHT22
+
+// DHT class with object dht
+DHT dht = DHT(dataPin, DHTType);
+
+void setup() {
+    Serial.begin(9600);
+    Serial.println("DHT22 starting...");
+
+ // Uncomment this line to print useful debug messages to Serial
+ // dht.enableDebugging(); 
+
+  // Initialize sensor
+  // wait for sensor to preheat for 10000ms
+     while(dht.begin(10000) !=true){
+         Serial.println("Failed to initialize DHT22 chip, please check the chip connection");
+         delay(1000);
+  }
+  Serial.println("DHT22 initialized successfully!");
+}
+
+void loop() {
+    delay(2000);
+    float h = dht.readHumidity();
+    float t = dht.readTemperature();
+    
+    if (isnan(h) || isnan(t)) {
+        Serial.println("Failed to read from the DHT sensor, check wiring.");
+        return;
+    }
+    
+    // print out the humidity
+    Serial.print("Humidity: ");
+    Serial.print(h);
+    
+    // print out the Temperature
+    Serial.print("% || Temperature: ");
+    Serial.print(t);
+    Serial.print("°C ");
+
+    //Print new line
+    Serial.println();
+}
+    
+    
