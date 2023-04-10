@@ -3,7 +3,13 @@
 // SGP40 class with object VOCSensor
 SGP40 VOCSensor;
 
+// SGP40 corresponds to 5th pin
+int SGP40Pin = 5;
+
 void setup() {
+
+  pinMode(SGP40Pin, OUTPUT);
+
   Serial.begin(115200);
   Serial.println("SGP40 starting...");
 
