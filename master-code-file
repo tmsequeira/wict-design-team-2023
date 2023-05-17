@@ -1,51 +1,99 @@
 # This document is for the complete code to run with the electronics team
 
 //Libraries to include
+#include <DHT.h>
+#include <MQ131.h>
+#include <PMS.h>
+#include <SoftwareSerial.h>
+#include <LiquidCrystal.h>
+#include <SparkFun_SGP40_Arduino_Library.h>
+#include <MG811.h>
 
 //Define PIN numbers
-// #define DHT22 1
-// #define MG811 2
-// #define MQ131 3
-// #define PMS5003 4
-// #define SGP40 5
+#define temp_hum_pin 1
+#define co2_pin A0
+#define ozone_pin A1
+#define particulate_pin 4
+#define voc_pin 5
+
+//Constants
+#define DHTTYPE DHT22
+DHT dht(temp_hum_pin, DHTTYPE);
+MG811 mySensor = MG811(A0);// co2
+float v400 = 4.535; // co2
+float v40000 = 3.206; //co2
 
 void setup() {
-  // put your setup code here, to run once:
-  Serial.begin(9600);
+  Serial.begin(11520);
 
   // set pin modes
-  pinMode(DHT22,OUTPUT);
-  pinMode(MG811,OUTPUT);
-  pinMode(MQ131,OUTPUT);
-  pinMode(PMS5003,OUTPUT);
-  pinMode(SGP40,OUTPUT);
+  pinMode(temp_hum_pin,OUTPUT);
+  pinMode(co2_pin,OUTPUT);
+  pinMode(ozone_pin,OUTPUT);
+  pinMode(particulate_pin,OUTPUT);
+  pinMode(voc_pin,OUTPUT);
   
   // Initialize sensors
+  dht.begin(); // temp&humidity
+  mySensor.begin(v400, v40000);
+  MQ131.begin(4,A1, LOW_CONCENTRATION, 1000000); // ozone
+  MQ131.calibrate();
 
+  // Debugging lines
+  // VOCSensor.enableDebugging();
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
+  dht_sensor(); // call Temperature & Humidity function
+  mg_sensor(); // call CO2 function
+  mq_sensor(); // call Ozone function
+  pms_sensor(); // call Particulate Matter function
+  sg_sensor(); // call VOC Detector function
+  Serial.println();
+  // delay in all display readings
+  delay(1000);
+}
 
-  // Temperature Data
-  Serial.print("Temperature:" );
+// functions to call sensor values
+float dht_sensor() {
+  // variables
+  int chk;
+  float hum;  //Stores humidity value
+  float temp; //Stores temperature value
+  //Read data and store it to variables hum and temp
+  hum = dht.readHumidity();
+  temp= dht.readTemperature();
+  //Print temp and humidity values to serial monitor
+  Serial.print("Humidity: ");
+  Serial.print(hum);
+  Serial.print(" %");
+  Serial.println("Temp: ");
+  Serial.print(temp);
+  Serial.print(" Celsius");
+}
+
+float mg_sensor() {
+  Serial.print("C02 Concentration: ");
+  Serial.print(mySensor.read());
+  Serial.print(" ppm");
   Serial.println();
-  // Humidity Data
-  Serial.print("Humidity:" );
-  Serial.println(); 
-  // CO2 Data
-  Serial.print("CO2 Level:" );
-  Serial.println();
-  // Ozone Data
-  Serial.print("Ozone Level:" );
-  Serial.println();
-  // Particulate Matter
-  Serial.print("Particulate Matter:" );
-  Serial.println();
-  // VOC Detector Data
-  Serial.print("VOCs:" );
-  Serial.println();
-  
-  // delay in display readings
-  delay(100);
+}
+
+float mq_sensor() {
+  Serial.print("Concentration: ");
+  Serial.print(MQ131.getO3(PPM));
+  Serial.print(" ppm");
+}
+
+float pms_sensor() {
+  PMS::DATA data;
+  Serial.print("PM1.0 :" + String(data.PM_AE_UG_1_0) + "(ug/m3)");
+  Serial.println("PM2.5 :" + String(data.PM_AE_UG_2_5) + "(ug/m3)");
+  Serial.println("PM10  :" + String(data.PM_AE_UG_10_0) + "(ug/m3)");
+}
+
+float sg_sensor() {
+  SGP40 VOCSensor; // voc
+  Serial.print(F("VOC Index is: "));
+  Serial.print(VOCSensor.getVOCindex());
 }
