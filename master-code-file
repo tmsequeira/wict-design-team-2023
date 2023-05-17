@@ -24,7 +24,7 @@ float v400 = 4.535; // co2
 float v40000 = 3.206; //co2
 
 void setup() {
-  Serial.begin(11520);
+  Serial.begin(9600);
 
   // set pin modes
   pinMode(temp_hum_pin,OUTPUT);
@@ -51,7 +51,7 @@ void loop() {
   sg_sensor(); // call VOC Detector function
   Serial.println();
   // delay in all display readings
-  delay(1000);
+  delay(2000);
 }
 
 // functions to call sensor values
@@ -66,10 +66,11 @@ float dht_sensor() {
   //Print temp and humidity values to serial monitor
   Serial.print("Humidity: ");
   Serial.print(hum);
-  Serial.print(" %");
-  Serial.println("Temp: ");
+  Serial.println("%");
+  Serial.print("Temp: ");
   Serial.print(temp);
-  Serial.print(" Celsius");
+  Serial.print(" °C");
+  Serial.println();
 }
 
 float mg_sensor() {
@@ -83,17 +84,20 @@ float mq_sensor() {
   Serial.print("Concentration: ");
   Serial.print(MQ131.getO3(PPM));
   Serial.print(" ppm");
+  Serial.println();
 }
 
 float pms_sensor() {
   PMS::DATA data;
-  Serial.print("PM1.0 :" + String(data.PM_AE_UG_1_0) + "(ug/m3)");
+  Serial.println("PM1.0 :" + String(data.PM_AE_UG_1_0) + "(ug/m3)");
   Serial.println("PM2.5 :" + String(data.PM_AE_UG_2_5) + "(ug/m3)");
-  Serial.println("PM10  :" + String(data.PM_AE_UG_10_0) + "(ug/m3)");
+  Serial.print("PM10  :" + String(data.PM_AE_UG_10_0) + "(ug/m3)");
+  Serial.println();
 }
 
 float sg_sensor() {
   SGP40 VOCSensor; // voc
   Serial.print(F("VOC Index is: "));
   Serial.print(VOCSensor.getVOCindex());
+  Serial.println();
 }
