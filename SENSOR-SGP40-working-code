@@ -23,10 +23,23 @@ void setup() {
   }
   Serial.println("SGP40 initialized successfully!");
 }
+
 void loop() {
   //Get the VOC Index using the default RH (50%) and T (25C)
   Serial.print(F("VOC Index is: "));
-  Serial.println(VOCSensor.getVOCindex()); 
+  int index = VOCSensor.getVOCindex();
+  Serial.println(index); 
+  
+  // Metric bounds
+  if ((index > 100) && (index <= 400)) {
+    Serial.println("Recommendation: Poor air quality - ventilate and purify");
+  } else if ((index > 400) && (index <= 500)) {
+    Serial.println("Recommendation: Extremely poor air quality - ventilate and purify");
+  } else if ((index > 0) && (index <= 100)) {
+    Serial.println("Air quality is normal, no actions needed");
+  } else {
+    Serial.println("Reading is out of bounds, please check sensor and wiring");
+  }
   
   // sample rate of 1 Hz
   delay(1000);
