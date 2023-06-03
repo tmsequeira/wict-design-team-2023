@@ -14,9 +14,13 @@ void setup() {
 
   // Uncomment this line to print useful debug messages to Serial
   // VOCSensor.enableDebugging(); 
+  
   // Initialize sensor
   // wait for sensor to preheat for 10000ms
+  Serial.println("SGP40 calibrating...");
   delay(10000);
+  Serial.println("SGP40 is calibrated!");
+
   while (VOCSensor.begin() == false){
     Serial.println("Failed to initialize chip, please check the chip connection");
     delay(1000);
