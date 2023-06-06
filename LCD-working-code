@@ -1,5 +1,7 @@
 #include <LiquidCrystal.h>
 
+// To use this code, just copy paste this into the master code file, and utilize function "displayValue".
+
 // Define LCD pins
 LiquidCrystal lcd(12, 11, 5, 4, 3, 2);
 
